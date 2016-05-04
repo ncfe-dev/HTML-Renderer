@@ -61,6 +61,7 @@
     <Compile Include="Core\Dom\HoverBoxBlock.cs" />
     <Compile Include="Core\Dom\HtmlTag.cs" />
     <Compile Include="Core\Dom\Border.cs" />
+    <Compile Include="Core\Dom\CssBoxCopy.cs" />
     <Compile Include="Core\Entities\CssBlock.cs" />
     <Compile Include="Core\Entities\CssBlockSelectorItem.cs" />
     <Compile Include="Core\Entities\HtmlGenerationStyle.cs" />

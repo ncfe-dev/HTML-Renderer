@@ -624,12 +624,19 @@ namespace TheArtOfDev.HtmlRenderer.Core.Dom
                 _tableBox.Location = new RPoint(startx - _tableBox.ActualBorderLeftWidth - _tableBox.ActualPaddingLeft - GetHorizontalSpacing(), _tableBox.Location.Y);
             }
 
-            for (int i = 0; i < _allRows.Count; i++)
+            // calculate header's and footer's size
+            var dummyY = cury; // don't need to change real coordinates so use temp variables
+            var dummyBottom = maxBottom;
+            LayoutRowsGroup(g, _headerBox, startx, ref dummyY, maxRight, ref dummyBottom);
+            LayoutRowsGroup(g, _footerBox, startx, ref dummyY, maxRight, ref dummyBottom);
+
+            for (int i = 0; i < _bodyrows.Count; i++)
             {
                 var row = _allRows[i];
                 double curx = startx;
                 int curCol = 0;
                 bool breakPage = false;
+                row.Location = new RPoint(curx, cury);
 
                 for (int j = 0; j < row.Boxes.Count; j++)
                 {
@@ -689,14 +696,31 @@ namespace TheArtOfDev.HtmlRenderer.Core.Dom
                     }
                 }
 
+                row.ActualRight = maxRight;
+                row.ActualBottom = maxBottom;
+
                 if (breakPage) // go back to move the whole row to the next page
                 {
-                    if (i == 1) // do not leave single row in previous page
-                        i = -1; // Start layout from the first row on new page
-                    else
-                        i--;
-
                     maxBottom = 0;
+
+                    if (i == 0 && _headerBox != null) // if there is a table header and first row doesn't fit into page
+                    {
+                        // Move header's to the next page
+                        LayoutRowsGroup(g, _headerBox, startx, ref cury, maxRight, ref maxBottom);
+                    }
+                    else
+                    {
+                        if (_headerBox != null && _headerBox.Display == CssConstants.TableHeaderGroup)
+                        {
+                            var headerRow = new CssBoxCopy(_headerBox);
+                            headerRow.Location = new RPoint(startx, cury);
+                            row.ParentBox.Boxes.Insert(row.ParentBox.Boxes.IndexOf(row), headerRow);
+                            headerRow.PerformLayout(g);
+                            cury = headerRow.ActualBottom + GetVerticalSpacing();
+                        }
+                    }
+                    i--;
+
                     continue;
                 }
 
@@ -708,6 +732,62 @@ namespace TheArtOfDev.HtmlRenderer.Core.Dom
             maxRight = Math.Max(maxRight, _tableBox.Location.X + _tableBox.ActualWidth);
             _tableBox.ActualRight = maxRight + GetHorizontalSpacing() + _tableBox.ActualBorderRightWidth;
             _tableBox.ActualBottom = Math.Max(maxBottom, starty) + GetVerticalSpacing() + _tableBox.ActualBorderBottomWidth;
+        }
+
+        /// <summary>
+        /// Layout the rows group
+        /// </summary>
+        /// <param name="g"></param>
+        private void LayoutRowsGroup(RGraphics g, CssBox group, double curx, ref double cury, double maxRight, ref double maxBottom)
+        {
+            if (group == null)
+                return;
+
+            group.Location = new RPoint(curx, cury);
+
+            for (int i = 0; i < group.Boxes.Count; i++)
+            {
+                var row = group.Boxes[i];
+                int curCol = 0;
+
+                for (int j = 0; j < row.Boxes.Count; j++)
+                {
+                    CssBox cell = row.Boxes[j];
+                    if (curCol >= _columnWidths.Length)
+                        break;
+
+                    int rowspan = GetRowSpan(cell);
+                    var columnIndex = GetCellRealColumnIndex(row, cell);
+                    double width = GetCellWidth(columnIndex, cell);
+                    cell.Location = new RPoint(curx, cury);
+                    cell.Size = new RSize(width, 0f);
+                    cell.PerformLayout(g); //That will automatically set the bottom of the cell
+
+                    if (rowspan == 1)
+                    {
+                        maxBottom = Math.Max(maxBottom, cell.ActualBottom);
+                    }
+                    maxRight = Math.Max(maxRight, cell.ActualRight);
+                    curCol++;
+                    curx = cell.ActualRight + GetHorizontalSpacing();
+                }
+
+                foreach (CssBox cell in row.Boxes)
+                {
+                    CssSpacingBox spacer = cell as CssSpacingBox;
+
+                    if (spacer == null && GetRowSpan(cell) == 1)
+                    {
+                        cell.ActualBottom = maxBottom;
+                        CssLayoutEngine.ApplyCellVerticalAlignment(g, cell);
+                    }
+                }
+
+                cury = maxBottom + GetVerticalSpacing();
+            }
+
+            group.ActualBottom = maxBottom;
+            group.ActualRight = maxRight;
         }
 
         /// <summary>

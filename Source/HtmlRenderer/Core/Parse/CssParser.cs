@@ -880,6 +880,11 @@ namespace TheArtOfDev.HtmlRenderer.Core.Parse
         /// <returns>found border width value or null</returns>
         private static string ParseBorderWidth(string str, int idx, int length)
         {
+            if (CommonUtils.SubStringEquals(str, idx, length, CssConstants.Inherit))
+            {
+                return CssConstants.Inherit;
+            }
+
             if ((length > 2 && char.IsDigit(str[idx])) || (length > 3 && str[idx] == '.'))
             {
                 string unit = null;
@@ -925,6 +930,8 @@ namespace TheArtOfDev.HtmlRenderer.Core.Parse
         /// <returns>found border width value or null</returns>
         private static string ParseBorderStyle(string str, int idx, int length)
         {
+            if (CommonUtils.SubStringEquals(str, idx, length, CssConstants.Inherit))
+                return CssConstants.Inherit;
             if (CommonUtils.SubStringEquals(str, idx, length, CssConstants.None))
                 return CssConstants.None;
             if (CommonUtils.SubStringEquals(str, idx, length, CssConstants.Solid))
@@ -955,6 +962,9 @@ namespace TheArtOfDev.HtmlRenderer.Core.Parse
         /// <returns>found border width value or null</returns>
         private string ParseBorderColor(string str, int idx, int length)
         {
+            if (CommonUtils.SubStringEquals(str, idx, length, CssConstants.Inherit))
+                return CssConstants.Inherit;
+
             RColor color;
             return _valueParser.TryGetColor(str, idx, length, out color) ? str.Substring(idx, length) : null;
         }

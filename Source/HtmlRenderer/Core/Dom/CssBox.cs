@@ -1233,7 +1233,13 @@ namespace TheArtOfDev.HtmlRenderer.Core.Dom
                     if (IsRectVisible(actualRect, clip))
                     {
                         PaintBackground(g, actualRect, i == 0, i == rects.Length - 1);
-                        BordersDrawHandler.DrawBoxBorders(g, this, actualRect, i == 0, i == rects.Length - 1);
+
+                        // ignore row borders in separated borders model
+                        // https://www.w3.org/TR/CSS21/tables.html#separated-borders
+                        if (!(this.HtmlTag != null && HtmlTag.Name == HtmlConstants.Tr && this.BorderCollapse != CssConstants.Collapse))
+                        {
+                            BordersDrawHandler.DrawBoxBorders(g, this, actualRect, i == 0, i == rects.Length - 1);
+                        }
                     }
                 }
 
