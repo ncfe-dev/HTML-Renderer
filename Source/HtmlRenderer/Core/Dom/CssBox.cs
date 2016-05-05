@@ -561,7 +561,7 @@ namespace TheArtOfDev.HtmlRenderer.Core.Dom
                     else
                     {
                         endIdx = startIdx;
-                        while (endIdx < _text.Length && !char.IsWhiteSpace(_text[endIdx]) && _text[endIdx] != '-' && WordBreak != CssConstants.BreakAll && !CommonUtils.IsAsianCharecter(_text[endIdx]))
+                        while (endIdx < _text.Length && !char.IsWhiteSpace(_text[endIdx]) && _text[endIdx] != '-' && !CommonUtils.IsAsianCharecter(_text[endIdx]))
                             endIdx++;
 
                         if (endIdx < _text.Length && (_text[endIdx] == '-' || WordBreak == CssConstants.BreakAll || CommonUtils.IsAsianCharecter(_text[endIdx])))
@@ -571,7 +571,22 @@ namespace TheArtOfDev.HtmlRenderer.Core.Dom
                         {
                             var hasSpaceBefore = !preserveSpaces && (startIdx > 0 && _boxWords.Count == 0 && char.IsWhiteSpace(_text[startIdx - 1]));
                             var hasSpaceAfter = !preserveSpaces && (endIdx < _text.Length && char.IsWhiteSpace(_text[endIdx]));
-                            _boxWords.Add(new CssRectWord(this, HtmlUtils.DecodeHtml(_text.Substring(startIdx, endIdx - startIdx)), hasSpaceBefore, hasSpaceAfter));
+
+                            if (this.WordBreak == CssConstants.BreakAll)
+                            {
+                                // add every single character as separate word to allow to break line in any position
+                                // decode special characters like &nbsp; &lt; before
+                                var text = HtmlUtils.DecodeHtml(_text.Substring(startIdx, endIdx - startIdx));
+
+                                for (int i = 0; i < text.Length; i++)
+                                {
+                                    _boxWords.Add(new CssRectWord(this, text.Substring(i, 1), hasSpaceBefore, hasSpaceAfter));
+                                }
+                            }
+                            else
+                            {
+                                _boxWords.Add(new CssRectWord(this, HtmlUtils.DecodeHtml(_text.Substring(startIdx, endIdx - startIdx)), hasSpaceBefore, hasSpaceAfter));
+                            }
                         }
                     }
 
