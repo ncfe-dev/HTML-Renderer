@@ -1341,7 +1341,7 @@ namespace TheArtOfDev.HtmlRenderer.Core.Dom
                     RGraphicsPath roundrect = null;
                     if (IsRounded)
                     {
-                        roundrect = RenderUtils.GetRoundRect(g, rect, ActualCornerNw, ActualCornerNe, ActualCornerSe, ActualCornerSw);
+                        roundrect = RenderUtils.GetRoundRect(g, rect, ActualBorderTLRadius, ActualBorderTRRadius, ActualBorderBRRadius, ActualBorderBLRadius);
                     }
 
                     Object prevMode = null;
@@ -1356,7 +1356,7 @@ namespace TheArtOfDev.HtmlRenderer.Core.Dom
                     }
                     else
                     {
-                        g.DrawRectangle(brush, Math.Ceiling(rect.X), Math.Ceiling(rect.Y), rect.Width, rect.Height);
+                        g.DrawRectangle(brush, rect.X, rect.Y, rect.Width, rect.Height);
                     }
 
                     g.ReturnPreviousSmoothingMode(prevMode);
@@ -1446,7 +1446,7 @@ namespace TheArtOfDev.HtmlRenderer.Core.Dom
             double y = 0f;
             if (TextDecoration == CssConstants.Underline)
             {
-                y = Math.Round(rectangle.Top + ActualFont.UnderlineOffset);
+                y = rectangle.Top + ActualFont.UnderlineOffset;
             }
             else if (TextDecoration == CssConstants.LineThrough)
             {

@@ -96,16 +96,33 @@ namespace TheArtOfDev.HtmlRenderer.Core.Utils
                     return cssBox.BorderSpacing;
                 case "border-collapse":
                     return cssBox.BorderCollapse;
+                case "border-radius":
+                    return cssBox.BorderRadius;
+                case "border-top-left-radius":
+                    return cssBox.BorderTLRadius;
+                case "border-top-right-radius":
+                    return cssBox.BorderTRRadius;
+                case "border-bottom-right-radius":
+                    return cssBox.BorderBRRadius;
+                case "border-bottom-left-radius":
+                    return cssBox.BorderBLRadius;
+
                 case "corner-radius":
-                    return cssBox.CornerRadius;
+                // leave for back compatibility only. Right property for rounded borders: border-radius
+                    return cssBox.BorderRadius;
+                // leave for back compatibility only. Right property for rounded corner: border-top-left-radius
                 case "corner-nw-radius":
-                    return cssBox.CornerNwRadius;
+                    return cssBox.BorderTLRadius;
+                // leave for back compatibility only. Right property for rounded borders: border-top-right-radius
                 case "corner-ne-radius":
-                    return cssBox.CornerNeRadius;
+                    return cssBox.BorderTRRadius;
+                // leave for back compatibility only. Right property for rounded borders: border-bottom-right-radius
                 case "corner-se-radius":
-                    return cssBox.CornerSeRadius;
+                    return cssBox.BorderBRRadius;
+                // leave for back compatibility only. Right property for rounded borders: border-bottom-left-radius
                 case "corner-sw-radius":
-                    return cssBox.CornerSwRadius;
+                    return cssBox.BorderBLRadius;
+
                 case "margin-bottom":
                     return cssBox.MarginBottom;
                 case "margin-left":
@@ -255,21 +272,43 @@ namespace TheArtOfDev.HtmlRenderer.Core.Utils
                 case "border-collapse":
                     cssBox.BorderCollapse = value;
                     break;
+                case "border-radius":
+                    cssBox.BorderRadius = value;
+                    break;
+                case "border-top-left-radius":
+                    cssBox.BorderTLRadius = value;
+                    break;
+                case "border-top-right-radius":
+                    cssBox.BorderTRRadius = value;
+                    break;
+                case "border-bottom-right-radius":
+                    cssBox.BorderBRRadius = value;
+                    break;
+                case "border-bottom-left-radius":
+                    cssBox.BorderBLRadius = value;
+                    break;
+
+                // leave for back compatibility only. Right property for rounded borders: border-radius
                 case "corner-radius":
-                    cssBox.CornerRadius = value;
+                    cssBox.BorderRadius = value;
                     break;
+                // leave for back compatibility only. Right property for rounded corner: border-top-left-radius
                 case "corner-nw-radius":
-                    cssBox.CornerNwRadius = value;
+                    cssBox.BorderTLRadius = value;
                     break;
+                // leave for back compatibility only. Right property for rounded borders: border-top-right-radius
                 case "corner-ne-radius":
-                    cssBox.CornerNeRadius = value;
+                    cssBox.BorderTRRadius = value;
                     break;
+                // leave for back compatibility only. Right property for rounded borders: border-bottom-right-radius
                 case "corner-se-radius":
-                    cssBox.CornerSeRadius = value;
+                    cssBox.BorderBRRadius = value;
                     break;
+                // leave for back compatibility only. Right property for rounded borders: border-bottom-left-radius
                 case "corner-sw-radius":
-                    cssBox.CornerSwRadius = value;
+                    cssBox.BorderBLRadius = value;
                     break;
+
                 case "margin-bottom":
                     cssBox.MarginBottom = value;
                     break;

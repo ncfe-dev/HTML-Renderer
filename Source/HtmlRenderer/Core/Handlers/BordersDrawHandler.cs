@@ -126,16 +126,16 @@ namespace TheArtOfDev.HtmlRenderer.Core.Handlers
                     switch (border)
                     {
                         case Border.Top:
-                            g.DrawLine(pen, Math.Ceiling(rect.Left), rect.Top + box.ActualBorderTopWidth / 2, rect.Right - 1, rect.Top + box.ActualBorderTopWidth / 2);
+                            g.DrawLine(pen, rect.Left, rect.Top + box.ActualBorderTopWidth / 2, rect.Right, rect.Top + box.ActualBorderTopWidth / 2);
                             break;
                         case Border.Left:
-                            g.DrawLine(pen, rect.Left + box.ActualBorderLeftWidth / 2, Math.Ceiling(rect.Top), rect.Left + box.ActualBorderLeftWidth / 2, Math.Floor(rect.Bottom));
+                            g.DrawLine(pen, rect.Left + box.ActualBorderLeftWidth / 2, rect.Top, rect.Left + box.ActualBorderLeftWidth / 2, rect.Bottom);
                             break;
                         case Border.Bottom:
-                            g.DrawLine(pen, Math.Ceiling(rect.Left), rect.Bottom - box.ActualBorderBottomWidth / 2, rect.Right - 1, rect.Bottom - box.ActualBorderBottomWidth / 2);
+                            g.DrawLine(pen, rect.Left, rect.Bottom - box.ActualBorderBottomWidth / 2, rect.Right, rect.Bottom - box.ActualBorderBottomWidth / 2);
                             break;
                         case Border.Right:
-                            g.DrawLine(pen, rect.Right - box.ActualBorderRightWidth / 2, Math.Ceiling(rect.Top), rect.Right - box.ActualBorderRightWidth / 2, Math.Floor(rect.Bottom));
+                            g.DrawLine(pen, rect.Right - box.ActualBorderRightWidth / 2, rect.Top, rect.Right - box.ActualBorderRightWidth / 2, rect.Bottom);
                             break;
                     }
                 }
@@ -206,69 +206,69 @@ namespace TheArtOfDev.HtmlRenderer.Core.Handlers
             switch (border)
             {
                 case Border.Top:
-                    if (b.ActualCornerNw > 0 || b.ActualCornerNe > 0)
+                    if (b.ActualBorderTLRadius > 0 || b.ActualBorderTRRadius > 0)
                     {
                         path = g.GetGraphicsPath();
-                        path.Start(r.Left + b.ActualBorderLeftWidth / 2, r.Top + b.ActualBorderTopWidth / 2 + b.ActualCornerNw);
+                        path.Start(r.Left + b.ActualBorderLeftWidth / 2, r.Top + b.ActualBorderTopWidth / 2 + b.ActualBorderTLRadius);
 
-                        if (b.ActualCornerNw > 0)
-                            path.ArcTo(r.Left + b.ActualBorderLeftWidth / 2 + b.ActualCornerNw, r.Top + b.ActualBorderTopWidth / 2, b.ActualCornerNw, RGraphicsPath.Corner.TopLeft);
+                        if (b.ActualBorderTLRadius > 0)
+                            path.ArcTo(r.Left + b.ActualBorderLeftWidth / 2 + b.ActualBorderTLRadius, r.Top + b.ActualBorderTopWidth / 2, b.ActualBorderTLRadius, RGraphicsPath.Corner.TopLeft);
 
-                        path.LineTo(r.Right - b.ActualBorderRightWidth / 2 - b.ActualCornerNe, r.Top + b.ActualBorderTopWidth / 2);
+                        path.LineTo(r.Right - b.ActualBorderRightWidth / 2 - b.ActualBorderTRRadius, r.Top + b.ActualBorderTopWidth / 2);
 
-                        if (b.ActualCornerNe > 0)
-                            path.ArcTo(r.Right - b.ActualBorderRightWidth / 2, r.Top + b.ActualBorderTopWidth / 2 + b.ActualCornerNe, b.ActualCornerNe, RGraphicsPath.Corner.TopRight);
+                        if (b.ActualBorderTRRadius > 0)
+                            path.ArcTo(r.Right - b.ActualBorderRightWidth / 2, r.Top + b.ActualBorderTopWidth / 2 + b.ActualBorderTRRadius, b.ActualBorderTRRadius, RGraphicsPath.Corner.TopRight);
                     }
                     break;
                 case Border.Bottom:
-                    if (b.ActualCornerSw > 0 || b.ActualCornerSe > 0)
+                    if (b.ActualBorderBLRadius > 0 || b.ActualBorderBRRadius > 0)
                     {
                         path = g.GetGraphicsPath();
-                        path.Start(r.Right - b.ActualBorderRightWidth / 2, r.Bottom - b.ActualBorderBottomWidth / 2 - b.ActualCornerSe);
+                        path.Start(r.Right - b.ActualBorderRightWidth / 2, r.Bottom - b.ActualBorderBottomWidth / 2 - b.ActualBorderBRRadius);
 
-                        if (b.ActualCornerSe > 0)
-                            path.ArcTo(r.Right - b.ActualBorderRightWidth / 2 - b.ActualCornerSe, r.Bottom - b.ActualBorderBottomWidth / 2, b.ActualCornerSe, RGraphicsPath.Corner.BottomRight);
+                        if (b.ActualBorderBRRadius > 0)
+                            path.ArcTo(r.Right - b.ActualBorderRightWidth / 2 - b.ActualBorderBRRadius, r.Bottom - b.ActualBorderBottomWidth / 2, b.ActualBorderBRRadius, RGraphicsPath.Corner.BottomRight);
 
-                        path.LineTo(r.Left + b.ActualBorderLeftWidth / 2 + b.ActualCornerSw, r.Bottom - b.ActualBorderBottomWidth / 2);
+                        path.LineTo(r.Left + b.ActualBorderLeftWidth / 2 + b.ActualBorderBLRadius, r.Bottom - b.ActualBorderBottomWidth / 2);
 
-                        if (b.ActualCornerSw > 0)
-                            path.ArcTo(r.Left + b.ActualBorderLeftWidth / 2, r.Bottom - b.ActualBorderBottomWidth / 2 - b.ActualCornerSw, b.ActualCornerSw, RGraphicsPath.Corner.BottomLeft);
+                        if (b.ActualBorderBLRadius > 0)
+                            path.ArcTo(r.Left + b.ActualBorderLeftWidth / 2, r.Bottom - b.ActualBorderBottomWidth / 2 - b.ActualBorderBLRadius, b.ActualBorderBLRadius, RGraphicsPath.Corner.BottomLeft);
                     }
                     break;
                 case Border.Right:
-                    if (b.ActualCornerNe > 0 || b.ActualCornerSe > 0)
+                    if (b.ActualBorderTRRadius > 0 || b.ActualBorderBRRadius > 0)
                     {
                         path = g.GetGraphicsPath();
 
                         bool noTop = b.BorderTopStyle == CssConstants.None || b.BorderTopStyle == CssConstants.Hidden;
                         bool noBottom = b.BorderBottomStyle == CssConstants.None || b.BorderBottomStyle == CssConstants.Hidden;
-                        path.Start(r.Right - b.ActualBorderRightWidth / 2 - (noTop ? b.ActualCornerNe : 0), r.Top + b.ActualBorderTopWidth / 2 + (noTop ? 0 : b.ActualCornerNe));
+                        path.Start(r.Right - b.ActualBorderRightWidth / 2 - (noTop ? b.ActualBorderTRRadius : 0), r.Top + b.ActualBorderTopWidth / 2 + (noTop ? 0 : b.ActualBorderTRRadius));
 
-                        if (b.ActualCornerNe > 0 && noTop)
-                            path.ArcTo(r.Right - b.ActualBorderLeftWidth / 2, r.Top + b.ActualBorderTopWidth / 2 + b.ActualCornerNe, b.ActualCornerNe, RGraphicsPath.Corner.TopRight);
+                        if (b.ActualBorderTRRadius > 0 && noTop)
+                            path.ArcTo(r.Right - b.ActualBorderLeftWidth / 2, r.Top + b.ActualBorderTopWidth / 2 + b.ActualBorderTRRadius, b.ActualBorderTRRadius, RGraphicsPath.Corner.TopRight);
 
-                        path.LineTo(r.Right - b.ActualBorderRightWidth / 2, r.Bottom - b.ActualBorderBottomWidth / 2 - b.ActualCornerSe);
+                        path.LineTo(r.Right - b.ActualBorderRightWidth / 2, r.Bottom - b.ActualBorderBottomWidth / 2 - b.ActualBorderBRRadius);
 
-                        if (b.ActualCornerSe > 0 && noBottom)
-                            path.ArcTo(r.Right - b.ActualBorderRightWidth / 2 - b.ActualCornerSe, r.Bottom - b.ActualBorderBottomWidth / 2, b.ActualCornerSe, RGraphicsPath.Corner.BottomRight);
+                        if (b.ActualBorderBRRadius > 0 && noBottom)
+                            path.ArcTo(r.Right - b.ActualBorderRightWidth / 2 - b.ActualBorderBRRadius, r.Bottom - b.ActualBorderBottomWidth / 2, b.ActualBorderBRRadius, RGraphicsPath.Corner.BottomRight);
                     }
                     break;
                 case Border.Left:
-                    if (b.ActualCornerNw > 0 || b.ActualCornerSw > 0)
+                    if (b.ActualBorderTLRadius > 0 || b.ActualBorderBLRadius > 0)
                     {
                         path = g.GetGraphicsPath();
 
                         bool noTop = b.BorderTopStyle == CssConstants.None || b.BorderTopStyle == CssConstants.Hidden;
                         bool noBottom = b.BorderBottomStyle == CssConstants.None || b.BorderBottomStyle == CssConstants.Hidden;
-                        path.Start(r.Left + b.ActualBorderLeftWidth / 2 + (noBottom ? b.ActualCornerSw : 0), r.Bottom - b.ActualBorderBottomWidth / 2 - (noBottom ? 0 : b.ActualCornerSw));
+                        path.Start(r.Left + b.ActualBorderLeftWidth / 2 + (noBottom ? b.ActualBorderBLRadius : 0), r.Bottom - b.ActualBorderBottomWidth / 2 - (noBottom ? 0 : b.ActualBorderBLRadius));
 
-                        if (b.ActualCornerSw > 0 && noBottom)
-                            path.ArcTo(r.Left + b.ActualBorderLeftWidth / 2, r.Bottom - b.ActualBorderBottomWidth / 2 - b.ActualCornerSw, b.ActualCornerSw, RGraphicsPath.Corner.BottomLeft);
+                        if (b.ActualBorderBLRadius > 0 && noBottom)
+                            path.ArcTo(r.Left + b.ActualBorderLeftWidth / 2, r.Bottom - b.ActualBorderBottomWidth / 2 - b.ActualBorderBLRadius, b.ActualBorderBLRadius, RGraphicsPath.Corner.BottomLeft);
 
-                        path.LineTo(r.Left + b.ActualBorderLeftWidth / 2, r.Top + b.ActualBorderTopWidth / 2 + b.ActualCornerNw);
+                        path.LineTo(r.Left + b.ActualBorderLeftWidth / 2, r.Top + b.ActualBorderTopWidth / 2 + b.ActualBorderTLRadius);
 
-                        if (b.ActualCornerNw > 0 && noTop)
-                            path.ArcTo(r.Left + b.ActualBorderLeftWidth / 2 + b.ActualCornerNw, r.Top + b.ActualBorderTopWidth / 2, b.ActualCornerNw, RGraphicsPath.Corner.TopLeft);
+                        if (b.ActualBorderTLRadius > 0 && noTop)
+                            path.ArcTo(r.Left + b.ActualBorderLeftWidth / 2 + b.ActualBorderTLRadius, r.Top + b.ActualBorderTopWidth / 2, b.ActualBorderTLRadius, RGraphicsPath.Corner.TopLeft);
                     }
                     break;
             }
