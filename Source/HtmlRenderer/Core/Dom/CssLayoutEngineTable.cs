@@ -630,7 +630,7 @@ namespace TheArtOfDev.HtmlRenderer.Core.Dom
             LayoutRowsGroup(g, _headerBox, startx, ref dummyY, maxRight, ref dummyBottom);
             LayoutRowsGroup(g, _footerBox, startx, ref dummyY, maxRight, ref dummyBottom);
 
-            for (int i = 0; i < _bodyrows.Count; i++)
+            for (int i = 0; i < _allRows.Count; i++)
             {
                 var row = _allRows[i];
                 double curx = startx;
